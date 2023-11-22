@@ -16,7 +16,9 @@ Other specific dependencies can be found in the environment.yml
 # Quick Start
 ## Clone code 
 ~~~shell
+cd ~/home
 git clone https://github.com/jiang-cmyk/ComMGAE
+cd ComMGAE
 ~~~
 
 ## Reproduce the environment
@@ -27,7 +29,7 @@ conda env create -f environment.yml
 ## Start training
 Train the model with the best parameters for node classification
 ~~~shell
-python train.py --dataset Cora --param local.json --cfg
+python main.py --dataset Cora --param local.json --cfg
 ~~~
 You can change the parameter in the train files (NOT RECOMMENDED)
 
@@ -45,4 +47,4 @@ Comparative experiment on the node calssification task
 || VGAE  | 76.30±0.20 | 66.80±0.20 | 64.80±0.20 | 85.80±0.30 | 91.50±0.20 |
 || MaskGAE | 84.05±0.18 | 73.49±0.59 | 70.73±0.30 | 89.01±0.34 | 92.89±0.18 |
 || GraphMAE | 84.12±0.54 | 73.40±0.40 | 71.75±0.17 | 88.04±0.54 | 92.43±0.16 |
-|| **ComMGAE(ours)** | **85.17±0.53** | __74.51±0.41__ | __72.03±0.11__ | __89.80±0.14__ | __93.22±0.26__|
+|| **ComMGAE(ours)** | __85.17±0.53__ | __74.51±0.41__ | __72.03±0.11__ | __89.80±0.14__ | __93.22±0.26__|
