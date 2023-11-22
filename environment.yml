@@ -1,6 +1,7 @@
 name: pytorch
 channels:
   - defaults
+
 dependencies:
   - argon2-cffi=21.3.0=pyhd3eb1b0_0
   - argon2-cffi-bindings=21.2.0=py39h2bbff1b_0

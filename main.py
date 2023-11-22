@@ -29,7 +29,7 @@ def get_logger(name):
 
     logging.config.dictConfig(config_dict)
     logger = logging.getLogger(name)
-    #
+
     std_out_format = '%(asctime)s- [%(levelname)s] - %(message)s'
     consoleHandler = logging.StreamHandler(sys.stdout)
     consoleHandler.setFormatter(logging.Formatter(std_out_format))
