@@ -3,6 +3,7 @@
   <img src="fig/F2.png" width="1000">
   <br />
 </p>
+
 The code is based on the implementation of [GraphMAE](https://github.com/THUDM/GraphMAE) and [CSGCL](https://github.com/HanChen-HUST/CSGCL)
 
 <p>
