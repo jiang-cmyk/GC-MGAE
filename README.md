@@ -19,13 +19,13 @@ Other specific dependencies can be found in the environment.yml
 git clone https://github.com/jiang-cmyk/ComMGAE
 ~~~
 
-## Reproducing the environment
+## Reproduce the environment
 ~~~conda
 conda env create -f environment.yml
 ~~~
 
 ## Start training
-Train the model with the best parameters for nodeclassification
+Train the model with the best parameters for node classification
 ~~~shell
 python train.py --dataset Cora --param local.json --cfg
 ~~~
