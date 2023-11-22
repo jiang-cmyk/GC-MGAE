@@ -4,8 +4,6 @@ import torch
 import torch.nn as nn
 
 from src.utils import create_optimizer, accuracy
-
-
 def node_classification_evaluation(model, graph, x, num_classes, lr_f, weight_decay_f, max_epoch_f, device, linear_prob=True, mute=False):
     model.eval()
     if linear_prob:

@@ -7,8 +7,6 @@ import dgl.function as fn
 from dgl.utils import expand_as_pair
 
 from src.utils import create_activation
-
-
 class GAT(nn.Module):
     def __init__(self,
                  in_dim,

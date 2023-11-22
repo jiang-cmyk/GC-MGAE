@@ -4,8 +4,6 @@ import torch
 from typing import Sequence
 from cdlib import algorithms
 from cdlib.utils import convert_graph_formats
-
-
 def community_detection(name):
     algs = {
         # non-overlapping algorithms

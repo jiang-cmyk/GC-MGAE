@@ -13,7 +13,6 @@ def sce_loss(x, y, alpha=3):
     loss = loss.mean()
     return loss
 
-
 def sig_loss(x, y):
     x = F.normalize(x, p=2, dim=-1)
     y = F.normalize(y, p=2, dim=-1)
