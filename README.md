@@ -27,7 +27,7 @@ conda env create -f environment.yml
 ## Start training
 Train the model with the best parameters for nodeclassification
 ~~~shell
-python train.py --dataset Cora --param local.json --cfx
+python train.py --dataset Cora --param local.json --cfg
 ~~~
 You can change the parameter in the train files (NOT RECOMMENDED)
 
