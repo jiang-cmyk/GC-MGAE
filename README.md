@@ -45,7 +45,7 @@ python main.py --dataset Cora --param local.json --cfg
 You can change the parameter in the train files (NOT RECOMMENDED)
 
 # Result
-Comparative experiment on the node calssification task
+Comparative experiment on the node classification task
 
 |            | Method | Cora  | CiteSeer | Arxiv | Computers | Photo |
 |------------|---|:---:|:---:|:---:|:---:|:---:|
