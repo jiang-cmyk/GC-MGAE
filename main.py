@@ -4,10 +4,13 @@ from torch import optim as optim
 import torch.nn as nn
 import dgl
 import logging.config
+from ogb.graphproppred import DglGraphPropPredDataset
 from dgl.data import (
     CoraGraphDataset, 
     CiteseerGraphDataset,
-    # PubmedGraphDataset
+    # PubmedGraphDataset,
+    AmazonCoBuyComputerDataset,
+    AmazonCoBuyPhotoDataset
 )
 import argparse
 from tqdm import tqdm
@@ -18,7 +21,9 @@ GRAPH_DICT = {
     "cora": CoraGraphDataset,
     "citeseer": CiteseerGraphDataset,
     # "pubmed": PubmedGraphDataset,
-    # "ogbn-arxiv": DglNodePropPredDataset
+    "ogbn-arxiv": DglGraphPropPredDataset,
+    "Computers": AmazonCoBuyComputerDataset,
+    "Photo":AmazonCoBuyPhotoDataset
 }
 def get_logger(name):
     name += '_' + time.strftime('%d_%m_%Y') + '_' + time.strftime('%H:%M:%S')
@@ -40,13 +45,13 @@ def get_logger(name):
 def train_epoch(epoch):
     model.train()
     loss, ce_loss = model(graph, x)
-    # loss += 0.2 * ce_loss
+    loss += 0.2 * ce_loss
     opt.zero_grad()
     loss.backward()
     opt.step()
     scheduler.step()
     
-    if (epoch + 1) % 100 == 0:
+    if epoch  % 100 == 0:
         # print(f'epoch: {epoch}, loss:', loss.item())
         tacc, elacc = node_classification_evaluation(model, graph, x, 7, 0.01, 0.0001, 300, device, True, mute=True)
         #if (epoch + 1) % 500 == 0 or True:
@@ -83,7 +88,7 @@ if __name__ == '__main__':
     graph = graph.remove_self_loop()
     graph = graph.add_self_loop()
     x = graph.ndata["feat"]
-    best_acc, best_early_stopping = [], []
+    f_acc, f_early_stopping = [], []
     for i in range(3):
         # if True:
         # l, j, k =i % 10 *0.1, i // 10 % 10 * 0.1, i // 100 % 10*0.1
@@ -98,13 +103,13 @@ if __name__ == '__main__':
         scheduler = torch.optim.lr_scheduler.LambdaLR(opt, lr_lambda=scheduler)
         # model.set_para(0.3, 0.4, 0.1)
         model.set_para(0.5, 0.3, 0.05)
-        for epoch1 in range(3000):
+        for epoch1 in range(2401):
             train_epoch(epoch1)
         logger.info("############################################")
         logger.info(f"# best_acc: {max(acc_list)} # best_early-stopping: {max(estp_acc_list)}")
-        best_acc.append(max(acc_list))
-        best_early_stopping.append(max(estp_acc_list))
-    logger.info(f"# final_acc: {max(best_acc)} # final_early-stopping: {max(best_early_stopping)}")
+        f_acc.append(max(acc_list))
+        f_early_stopping.append(max(estp_acc_list))
+    logger.info(f"# final_acc: {max(f_acc)} # final_early-stopping: {max(f_early_stopping)}")
     logger.info(
-        f"# mean_acc: {sum(best_acc) / len(best_acc)} # mean_early-stopping: {sum(best_early_stopping) / len(best_early_stopping)}")
+        f"# mean_acc: {sum(f_acc) / len(f_acc)} # mean_early-stopping: {sum(f_early_stopping) / len(f_early_stopping)}")
     logger.info("finish!")

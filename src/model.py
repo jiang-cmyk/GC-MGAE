@@ -138,7 +138,10 @@ class ae(nn.Module):
         self.num_nodes = g.num_nodes()
         self.edge_decoder = EdgeDecoder(512, 215,num_layers=2, dropout=0.2)
         self.negative_sampler = negative_sampling
-        
+
+    def sig(self, f):
+        return 0#f if f<0 else 0
+
     def com_det(self, graph):
         p1 = './log/par/'+'cora_'+'edge_weight.pt'
         p2 = "./log/par/"+'cora_'+'node_cs'
@@ -162,7 +165,7 @@ class ae(nn.Module):
         return edge_weight, node_cs
         
     def forward(self, g, x):
-        u_g, u_x,  mask_nodes= self.make_attr(g, x)
+        u_g, u_x,  mask_nodes, masked_edges = self.make_attr(g, x)
         rep = self.encoder1(u_g, u_x)
         # rep = self.encoder2(u_g, rep)
 
@@ -173,29 +176,29 @@ class ae(nn.Module):
         criterion = partial(sce_loss, alpha=3)
         # criterion = nn.MSELoss()
         loss = criterion(x[mask_nodes], rep1[mask_nodes])
-        ce_los = 0
-        # #******************* loss for edge prediction *********************
-        # aug_edge_index, _ = add_self_loops(self.edge_index)
-        # neg_edges = self.negative_sampler(
-        #     aug_edge_index,
-        #     num_nodes=self.num_nodes,
-        #     num_neg_samples=masked_edges.view(2, -1).size(1),
-        # ).view_as(masked_edges)
-        #
-        # pos_out = self.edge_decoder(rep, masked_edges, sigmoid=False)
-        # neg_out = self.edge_decoder(rep, neg_edges, sigmoid=False)
-        #
-        # criterion0 = ce_loss
-        # ce_los = criterion0(pos_out, neg_out)
-        # #******************************************************************
+        #******************* loss for edge prediction *********************
+        aug_edge_index, _ = add_self_loops(self.edge_index)
+        neg_edges = self.negative_sampler(
+            aug_edge_index,
+            num_nodes=self.num_nodes,
+            num_neg_samples=masked_edges.view(2, -1).size(1),
+        ).view_as(masked_edges)
+
+        pos_out = self.edge_decoder(rep, masked_edges, sigmoid=False)
+        neg_out = self.edge_decoder(rep, neg_edges, sigmoid=False)
+
+        criterion0 = ce_loss
+        ce_los = criterion0(pos_out, neg_out)
+        ce_los = self.sig(ce_los)
+        #******************************************************************
 
         return loss, ce_los
         
     def make_attr(self, g, x):
 
-        u_g, u_x,  mask_nodes = self.encoding_mask_noise(g, x)
+        u_g, u_x,  mask_nodes, mask_edge = self.encoding_mask_noise(g, x)
         # u_g, u_x,  mask_nodes, mask_edge = self.make_noise(x)
-        return u_g, u_x,  mask_nodes#, mask_edge
+        return u_g, u_x,  mask_nodes, mask_edge
 
 
     def set_para(self, p1, p2, r_p):
@@ -248,6 +251,7 @@ class ae(nn.Module):
         mask_nodes = perm[: num_mask_nodes]
         keep_nodes = perm[num_mask_nodes: ]
 
+        _, mask_edge = ced(self.edge_index, self.edge_weight, p=self.p1, threshold=1.)
         if self._replace_rate > 0:
             num_noise_nodes = int(self._replace_rate * num_mask_nodes)
             perm_mask = torch.randperm(num_mask_nodes, device=x.device)
@@ -266,4 +270,4 @@ class ae(nn.Module):
         out_x[token_nodes] += self.enc_mask_token
         use_g = g.clone()
 
-        return use_g, out_x, mask_nodes
+        return use_g, out_x, mask_nodes, mask_edge
