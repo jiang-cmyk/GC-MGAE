@@ -1,4 +1,5 @@
-# ComMGAE：Community Aware Masked Graph Autoencoder
+# ComMGAE
+Code for ICDE2024 under review paper ComMGAE：Community Aware Masked Graph Autoencoder
 <p>
   <img src="fig/F2.png" width="1000">
   <br />
