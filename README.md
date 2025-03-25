@@ -65,7 +65,7 @@ conda env create -f environment.yml
 
 ## 特征读取
 
-从文件里面读出来
+从文件里面读出来，让后注到这里面
 
 ![替换这里的特征值](/fig/image11.png)
 
