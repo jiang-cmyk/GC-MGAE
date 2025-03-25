@@ -1,5 +1,5 @@
-# ComMGAE
-The code is based on the implementation of （OFA） [GraphMAE](https://github.com/THUDM/GraphMAE) and [CSGCL](https://github.com/HanChen-HUST/CSGCL)
+# GL-CMGAE
+The code is based on the implementation of [OFA](https://github.com/LechengKong/OneForAll), [GraphMAE](https://github.com/THUDM/GraphMAE) and [CSGCL](https://github.com/HanChen-HUST/CSGCL)
 
 
 
@@ -18,7 +18,7 @@ Other specific dependencies can be found in the environment.yml
 ## Clone code 
 ~~~shell
 cd ~/home
-git clone https://github.com/jiang-cmyk/ComMGAE
+git clone https://github.com/jiang-cmyk/GL-CMGAE
 ~~~
 
 ## Reproduce the environment
@@ -29,7 +29,7 @@ conda env create -f environment.yml
 
 # 操作流程
 ## 使用LLM句子嵌入
-现在直接用这个代码[OFA ](https://github.com/LechengKong/OneForAll/blob/main/run_cdm.py)
+现在直接用这个代码[wenb ](https://github.com/LechengKong/OneForAll/blob/main/run_cdm.py)
 
 
 主要包括这几步：
@@ -59,15 +59,20 @@ conda env create -f environment.yml
     6. Start training and logging.
     """
 ## 抽取特征
-![把这里的特征写到文件里面去](/images/image.jpg)
+![](/fig/image.png)
+
+**把这里的特征写到文件里面去**
 
 ## 特征读取
 
 从文件里面读出来
-！[替换这里的特征值](/images/image11.jpg)
+
+![替换这里的特征值](/fig/image11.png)
 
 ## 其他
 
 > 要配制huggingface国内镜像
+> 
 > 可以到官网上下载程序运行不了的对应的LLM文件放到对应的文件夹
-> 更换模型对于路径*（云端到本地）
+> 
+> 更换模型读取的路径*（云端到本地）
